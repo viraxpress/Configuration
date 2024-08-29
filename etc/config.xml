@@ -1,0 +1,71 @@
+<?xml version="1.0" ?>
+<!-- 
+/**
+ * ViraXpress - https://www.viraxpress.com
+ *
+ * LICENSE AGREEMENT
+ *
+ * This file is part of the ViraXpress package and is licensed under the ViraXpress license agreement.
+ * You can view the full license at:
+ * https://www.viraxpress.com/license
+ *
+ * By utilizing this file, you agree to comply with the terms outlined in the ViraXpress license.
+ *
+ * DISCLAIMER
+ *
+ * Modifications to this file are discouraged to ensure seamless upgrades and compatibility with future releases.
+ *
+ * @category    ViraXpress
+ * @package     ViraXpress_Configuration
+ * @author      ViraXpress
+ * @copyright   © 2024 ViraXpress (https://www.viraxpress.com/)
+ * @license     https://www.viraxpress.com/license
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+	<default>
+		<viraxpress_config>
+			<general>
+				<enable_viraxpress>1</enable_viraxpress>
+			</general>
+			<gallery>
+				<horizontal_vertical>horizontal</horizontal_vertical>
+			</gallery>
+			<header>
+				<enable_sticky_header>1</enable_sticky_header>
+			</header>
+			<colors>
+				<primary_color>#ca244d</primary_color>
+			</colors>
+			<checkout_theme_switcher>
+				<theme_full_path>frontend/Magento/luma</theme_full_path>
+				<default_checkout>checkout/index,multishipping/checkout,multishipping/checkout_address</default_checkout>
+			</checkout_theme_switcher>
+			<image_resize>
+				<product_list_image_resize>
+					<width>540</width>
+					<height>540</height>
+				</product_list_image_resize>
+				<product_list_grid_image_resize>
+					<grid_width>360</grid_width>
+					<grid_height>360</grid_height>
+				</product_list_grid_image_resize>
+				<product_view_image_resize>
+					<width>750</width>
+					<height>930</height>
+				</product_view_image_resize>
+				<product_carousel_image_resize>
+					<width>360</width>
+					<height>360</height>
+				</product_carousel_image_resize>
+				<product_related_cross_up_image_resize>
+					<width>360</width>
+					<height>360</height>
+				</product_related_cross_up_image_resize>
+			</image_resize>
+			<footer>
+				<viraxpress_text>We’re thrilled to introduce the VX Frontend theme—a game-changer for your Magento store. Say goodbye to the old Luma and step into a world of speed, simplicity, and modern design, powered by Alpine.js and Tailwind CSS.</viraxpress_text>
+			</footer>
+		</viraxpress_config>
+	</default>
+</config>

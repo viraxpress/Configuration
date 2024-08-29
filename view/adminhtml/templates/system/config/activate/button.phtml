@@ -1,0 +1,133 @@
+<?php
+/**
+ * ViraXpress - https://www.viraxpress.com
+ *
+ * LICENSE AGREEMENT
+ *
+ * This file is part of the ViraXpress package and is licensed under the ViraXpress license agreement.
+ * You can view the full license at:
+ * https://www.viraxpress.com/license
+ *
+ * By utilizing this file, you agree to comply with the terms outlined in the ViraXpress license.
+ *
+ * DISCLAIMER
+ *
+ * Modifications to this file are discouraged to ensure seamless upgrades and compatibility with future releases.
+ *
+ * @category    ViraXpress
+ * @package     ViraXpress_Configuration
+ * @author      ViraXpress
+ * @copyright   © 2024 ViraXpress (https://www.viraxpress.com/)
+ * @license     https://www.viraxpress.com/license
+ */
+?>
+<div class="activation-button-container">
+    <?= $block->getButtonHtml() ?>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var saveButton = document.querySelector('[data-ui-id="page-actions-toolbar-save-button"]');
+        var activateButton = document.getElementById("activate_license_button");
+        var fieldKey = document.getElementById("viraxpress_config_module_activation_token");
+        var fieldemail = document.getElementById("viraxpress_config_module_register_email");
+        var fieldname = document.getElementById("viraxpress_config_module_register_name");
+        var isactive = '<?= $escaper->escapeHtml($block->getData('is_active')) ?>';
+        var name = document.getElementById("viraxpress_config_module_register_name").value;
+        var email = document.getElementById("viraxpress_config_module_register_email").value;
+        if (!isactive) {
+            var closestTrKey = fieldKey.closest('tr');
+            if (closestTrKey) {
+                closestTrKey.style.display = 'none';
+            }
+            displayMessage({
+                isSuccess: false,
+                content: 'ViraXpress is not activated.'
+            });
+        } else {
+            activateButton.style.display = 'none';
+            var closestTrKey = fieldKey.closest('tr');
+            if (closestTrKey) {
+                closestTrKey.style.display = '';
+            }
+
+            var closestTrEmail = fieldemail.closest('tr');
+            if (closestTrEmail) {
+                closestTrEmail.style.display = 'none';
+            }
+
+            var closestTrName = fieldname.closest('tr');
+            if (closestTrName) {
+                closestTrName.style.display = 'none';
+            }
+            displayMessage({
+                isSuccess: true,
+                content: 'ViraXpress is sucessfully activated.'
+            });
+        }
+    });
+
+    function displayMessage(message) {
+        var messageBlock = document.getElementById("tm-activation-messages");
+        messageBlock.style.display = 'block';
+        var messageDiv = messageBlock.querySelector('.message div');
+        if (messageDiv) {
+            messageDiv.innerHTML = message.content;
+        }
+        var messageElement = messageBlock.querySelector('.message');
+        if (messageElement) {
+            messageElement.classList.remove('message-' + (message.isSuccess ? 'error' : 'success'));
+            messageElement.classList.add('message-' + (message.isSuccess ? 'success' : 'error'));
+        }
+    }
+
+    function activateToken() {
+        var activateButton = document.getElementById("activate_license_button");
+        var fieldKey = document.getElementById("viraxpress_config_module_activation_token");
+        var fieldemail = document.getElementById("viraxpress_config_module_register_email");
+        var fieldname = document.getElementById("viraxpress_config_module_register_name");
+        var saveButton = document.querySelector('[data-ui-id="page-actions-toolbar-save-button"]');
+        var name = document.getElementById("viraxpress_config_module_register_name").value;
+        var emailRegex = /^([a-z0-9,!\#\$%&'\*\+\/=\?\^_`\{\|\}~-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z0-9,!\#\$%&'\*\+\/=\?\^_`\{\|\}~-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*@([a-z0-9-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z0-9-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*\.(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]){2,})$/i;
+        var email = document.getElementById("viraxpress_config_module_register_email").value;
+        var fieldKey = document.getElementById("viraxpress_config_module_activation_token");
+        if ((name.trim() === '' || email.trim() === '') || !emailRegex.test(email)) {
+            saveButton.click();
+            return;
+        }
+        var domain = window.location.hostname;
+        var ajaxUrl = '<?= $escaper->escapeHtml($block->getData('activate_url')) ?>';
+        fetch(ajaxUrl +'?name='+name+'&email='+email+'&domain='+domain)
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(json) {
+            if (json.isSuccess == true) {
+                if (json.key) {
+                    fieldKey.value = json.key;
+                }
+                displayMessage(json);
+                activateButton.style.display = 'none';
+                var closestTrKey = fieldKey.closest('tr');
+                if (closestTrKey) {
+                    closestTrKey.style.display = ''; 
+                }
+
+                var closestTrEmail = fieldemail.closest('tr');
+                if (closestTrEmail) {
+                    closestTrEmail.style.display = 'none';
+                }
+
+                var closestTrName = fieldname.closest('tr');
+                if (closestTrName) {
+                    closestTrName.style.display = 'none';
+                }
+            } else {
+                displayMessage(json);
+                fieldemail.value = '';
+                fieldname.value = '';
+            }
+        })
+        .catch(function(error) {
+        });
+    }
+</script>

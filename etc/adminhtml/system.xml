@@ -1,0 +1,287 @@
+<?xml version="1.0"?>
+<!-- 
+/**
+ * ViraXpress - https://www.viraxpress.com
+ *
+ * LICENSE AGREEMENT
+ *
+ * This file is part of the ViraXpress package and is licensed under the ViraXpress license agreement.
+ * You can view the full license at:
+ * https://www.viraxpress.com/license
+ *
+ * By utilizing this file, you agree to comply with the terms outlined in the ViraXpress license.
+ *
+ * DISCLAIMER
+ *
+ * Modifications to this file are discouraged to ensure seamless upgrades and compatibility with future releases.
+ *
+ * @category    ViraXpress
+ * @package     ViraXpress_Configuration
+ * @author      ViraXpress
+ * @copyright   © 2024 ViraXpress (https://www.viraxpress.com/)
+ * @license     https://www.viraxpress.com/license
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <tab id="viraxpress" translate="label" sortOrder="10" class="tm-config-tab">
+            <label>ViraXpress</label>
+        </tab>
+        <section id="viraxpress_config" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>ViraXpress Configuration</label>
+            <tab>viraxpress</tab>
+            <resource>ViraXpressConfiguration_Configuration::config_es</resource>
+            <!-- <group id="module" translate="label" type="text" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                <label>Module Configuration</label>
+                <field id="notice" translate="label" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <frontend_model>ViraXpress\Configuration\Block\Adminhtml\System\Config\Message</frontend_model>
+                </field>
+                <field id="register_name" translate="label" type="text" sortOrder="2" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Register Name</label>
+                    <comment>Enter the name registered in ViraXpress.</comment>
+                    <validate>required-entry</validate>
+                </field>
+                <field id="register_email" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Register Email</label>
+                    <comment>Enter the email registered in ViraXpress.</comment>
+                    <validate>required-entry validate-email</validate>
+                </field>
+                <field id="activation_token" translate="label" type="text" sortOrder="4" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Activation token</label>
+                    <comment>Activation token generated for your account.</comment>
+                    <validate>required-entry</validate>
+                    <frontend_model>ViraXpress\Configuration\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+                <field id="activate" translate="label" sortOrder="5" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <frontend_model>ViraXpress\Configuration\Block\Adminhtml\System\Config\Button</frontend_model>
+                </field>
+            </group> -->
+            <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="enable_viraxpress" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable ViraXpress</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="server_npm_node_path" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Server npm node path</label>
+                    <comment>Go to the root path and enter "which npm", to update the above field</comment>
+                </field>
+            </group>
+            <group id="checkout_theme_switcher" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Checkout Theme Switcher</label>
+                <field id="theme_full_path" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30"
+                       translate="label,comment" type="select">
+                    <label>Theme</label>
+                    <comment>Default: 'Magento Luma'.</comment>
+                    <source_model>ViraXpress\Configuration\Model\Config\Source\Lists</source_model>
+                </field>
+                <field id="default_checkout" translate="label comment" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Checkout Contollers</label>
+                    <frontend_model>ViraXpress\Configuration\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+            </group>
+            <group id="gallery" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Catalog Gallery</label>
+                <field id="horizontal_vertical" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>PDP Thumbnail Images Horizontal Or Vertical</label>
+                    <source_model>ViraXpress\Configuration\Model\Config\Source\ImageType</source_model>
+                </field>
+            </group>
+            <group id="image_resize" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Catalog Product Image Resize</label>
+                <group id="product_list_image_resize" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product List View</label>
+                    <field id="width" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Width (px)</label>
+                        <validate>validate-number validate-digits</validate>
+                    </field>
+                    <field id="height" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Height (px)</label>
+                        <validate>validate-number validate-digits</validate>
+                    </field>
+                </group>
+                <group id="product_list_grid_image_resize" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product Grid View</label>
+                    <field id="grid_width" translate="label comment" type="text" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Width (px)</label>
+                        <validate>validate-number validate-digits</validate>
+                    </field>
+                    <field id="grid_height" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Height (px)</label>
+                        <validate>validate-number validate-digits</validate>
+                    </field>
+                </group>
+                <group id="product_view_image_resize" translate="label comment" type="text" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product Detail Page</label>
+                    <field id="width" translate="label comment" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Width (px)</label>
+                        <validate>validate-number validate-digits</validate>
+                    </field>
+                    <field id="height" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Height (px)</label>
+                        <validate>validate-number validate-digits</validate>
+                    </field>
+                </group>
+                <group id="product_carousel_image_resize" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Product Widget Carousel/Grid</label>
+                    <field id="width" translate="label comment" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Width (px)</label>
+                        <validate>validate-number validate-digits</validate>
+                    </field>
+                    <field id="height" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Height (px)</label>
+                        <validate>validate-number validate-digits</validate>
+                    </field>
+                </group>
+                <group id="product_related_cross_up_image_resize" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Related Products, Up-Sells, and Cross-Sells</label>
+                    <field id="width" translate="label comment" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Width (px)</label>
+                        <validate>validate-number validate-digits</validate>
+                    </field>
+                    <field id="height" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Height (px)</label>
+                        <validate>validate-number validate-digits</validate>
+                    </field>
+                </group>
+            </group>
+            <group id="colors" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="0" showInStore="0"> 
+                <label>Colors</label>
+                <field id="primary_color" translate="label" sortOrder="10" type="text" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Primary Color</label>
+                    <frontend_model>ViraXpress\Configuration\Block\Adminhtml\Colors</frontend_model>
+                </field>
+            </group>
+             <group id="animation" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Animation</label>
+                <group id="general" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>General</label>
+                    <field id="enable_animation" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Enable</label>
+                        <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    </field>
+                    <field id="global_effects" translate="label comment" type="select" sortOrder="5" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Global Effects</label>
+                        <source_model>ViraXpress\Configuration\Model\Config\Source\GlobalEffects</source_model>
+                    </field>
+                    <field id="customizable_effects" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="10" translate="label comment">
+                        <label>Customizable Effects</label>
+                        <frontend_model>ViraXpress\Configuration\Block\Adminhtml\CustomizableEffects</frontend_model>
+                        <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                        <validate>required-entry</validate>
+                        <comment>Format: Use ".class" or "#id" format.</comment>
+                    </field>
+                </group>
+            </group>
+            <group id="header" translate="label" type="text" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Header</label>
+                <field id="enable_sticky_header" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Sticky Header</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>Enable or disable sticky header at frontend.</comment>
+                </field>
+                <field id="block_id" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Top Static Block ID</label>
+                </field>
+            </group>
+            <group id="footer" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Footer</label>
+                <field id="viraxpress_text" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Footer Description Text</label>
+                </field>
+                <field id="block_id" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Footer Static links Block ID</label>
+                </field>
+                <field id="extra_block_id" translate="label comment" type="text" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Footer Extra Info Block ID</label>
+                </field>
+                <field id="enable_social" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Footer Social Links</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="footer_links" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="50" translate="label,comment">
+                    <label>Footer Social Links</label>
+                    <frontend_model>ViraXpress\Configuration\Block\Adminhtml\FooterUrlField</frontend_model>
+                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="*/*/enable_social">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+        <section id="tm_gtm_config" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Analytics Configuration</label>
+            <tab>viraxpress</tab>
+            <resource>ViraXpressConfiguration_Configuration::config_gtm</resource>
+            <group id="gtm_tracking" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Google Tag Manager Tracking</label>
+                <field id="gtm_notice" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>ViraXpress\Configuration\Block\Adminhtml\GtmNotice</frontend_model>
+
+                </field>
+                <field id="enable_gtm" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Google Tag Manager Tracking</label>
+                    <comment>Enable or diable to track the Google Tag Manager.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="gtm_code" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Google Tag Manager ID</label>
+                    <comment>Enter your Google Tag Manager ID.</comment>
+                    <depends>
+                        <field id="enable_gtm">1</field>
+                    </depends>
+                </field>
+                <field id="enable_ga" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Google Analytics Tracking</label>
+                    <comment>Enable or diable to track the Google Analytics.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="ga_code" translate="label comment" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Google Analytics Id</label>
+                    <comment>Enter your Google Analytics ID.</comment>
+                    <depends>
+                        <field id="enable_ga">1</field>
+                    </depends>
+                </field>
+            </group>
+            <group id="fb_pixel_tracking" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Facebook Pixel Tracking</label>
+                <field id="fb_notice" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <frontend_model>ViraXpress\Configuration\Block\Adminhtml\GtmNotice</frontend_model>
+
+                </field>
+                <field id="enable_fb" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Facebook Pixel Tracking</label>
+                    <comment>Enable or diable to track the Facebook Pixel.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="fb_code" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Facebook Pixel ID</label>
+                    <comment>Enter your Facebook Pixel ID.</comment>
+                    <depends>
+                        <field id="enable_fb">1</field>
+                    </depends>
+                </field>
+                <field id="enable_fb_base_code" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Facebook Base Code</label>
+                    <comment>Enable or diable to track the Facebook Base Code.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enable_fb">1</field>
+                    </depends>
+                </field>
+                <field id="enable_pageview" translate="label comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Facebook Pageview Event</label>
+                    <comment>Enable or diable to track the Facebook Pageview Event.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <depends>
+                        <field id="enable_fb">1</field>
+                    </depends>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
