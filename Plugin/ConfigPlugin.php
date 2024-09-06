@@ -162,6 +162,7 @@ class ConfigPlugin
                         ]
                     );
                     $npmCommand = "node ".$this->directory->getRoot()."/pub/vx/".$themePath."/web/tailwind/store-config.js '{$phpVariables}'";
+                    putenv('PATH=' . getenv('PATH') . ':' . $nodePath);
                     $result = $this->shell->execute($npmCommand, [], ['PATH' => $newEnvPath]);
                 }
             }

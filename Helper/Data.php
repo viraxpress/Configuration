@@ -231,7 +231,7 @@ class Data extends AbstractHelper
             (!$parentThemeId || $this->themeFactory->create()->load($parentThemeId)->getThemePath() != self::THEME_CODE)) {
             return false;
         } else {
-            return $this->design->getDesignTheme()->getCode();
+            return $theme->getThemePath();
         }
     }
 
