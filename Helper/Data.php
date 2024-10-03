@@ -227,7 +227,7 @@ class Data extends AbstractHelper
         $themeId = $this->design->getConfigurationDesignTheme('frontend', ['store' => $storeId]);
         $theme = $this->themeProvider->getThemeById($themeId);
         $parentThemeId = $theme->getParentId();
-        if ($this->design->getDesignTheme()->getCode() != self::THEME_CODE &&
+        if ($theme->getThemePath() != self::THEME_CODE &&
             (!$parentThemeId || $this->themeFactory->create()->load($parentThemeId)->getThemePath() != self::THEME_CODE)) {
             return false;
         } else {
@@ -246,11 +246,11 @@ class Data extends AbstractHelper
         $themeId = $this->design->getConfigurationDesignTheme('frontend', ['store' => $storeId]);
         $theme = $this->themeProvider->getThemeById($themeId);
         $parentThemeId = $theme->getParentId();
-        if (!empty($this->design->getDesignTheme()->getCode()) && $this->design->getDesignTheme()->getCode() != self::THEME_CODE &&
+        if (!empty($theme->getThemePath()) && $theme->getThemePath() != self::THEME_CODE &&
             (!$parentThemeId || $this->themeFactory->create()->load($parentThemeId)->getThemePath() != self::THEME_CODE)) {
             return false;
         } else {
-            return self::THEME_CODE;
+            return $theme->getThemePath();
         }
     }
 }
