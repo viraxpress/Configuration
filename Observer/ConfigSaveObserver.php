@@ -23,8 +23,10 @@
 
 declare(strict_types=1);
 
-namespace ViraXpress\Configuration\Plugin;
+namespace ViraXpress\Configuration\Observer;
 
+use Magento\Framework\Event\Observer;
+use Magento\Framework\Event\ObserverInterface;
 use ViraXpress\Cms\Model\NodeVersionFactory;
 use Magento\Store\Model\ScopeInterface;
 use Magento\Framework\Filesystem\DirectoryList;
@@ -35,15 +37,20 @@ use Magento\Theme\Model\ThemeFactory;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Framework\View\Design\Theme\ThemeProviderInterface;
 use Magento\Framework\View\DesignInterface;
-use Magento\Store\Api\StoreRepositoryInterface;
+use Magento\Framework\App\RequestInterface;
 
-class ConfigPlugin
+class ConfigSaveObserver implements ObserverInterface
 {
 
     /**
-     * @var StoreRepositoryInterface
+     * frontend theme code
      */
-    protected $storeRepository;
+    public const THEME_CODE = 'ViraXpress/frontend';
+
+    /**
+     * @var RequestInterface
+     */
+    private $request;
 
     /**
      * @var ScopeConfigInterface
@@ -97,8 +104,7 @@ class ConfigPlugin
      * @param StoreManagerInterface $storeManager
      * @param NodeVersionFactory $nodeVersionFactory
      * @param ThemeProviderInterface $themeProvider
-     * @param StoreRepositoryInterface $storeRepository
-     * @param DesignInterface $design
+     * @param RequestInterface $request
      * @param Data $dataHelper
      * @param Shell $shell
      */
@@ -109,7 +115,7 @@ class ConfigPlugin
         StoreManagerInterface $storeManager,
         NodeVersionFactory $nodeVersionFactory,
         ThemeProviderInterface $themeProvider,
-        StoreRepositoryInterface $storeRepository,
+        RequestInterface $request,
         DesignInterface $design,
         Data $dataHelper,
         Shell $shell
@@ -121,62 +127,71 @@ class ConfigPlugin
         $this->storeManager = $storeManager;
         $this->scopeConfig = $scopeConfig;
         $this->themeProvider = $themeProvider;
-        $this->storeRepository = $storeRepository;
+        $this->request = $request;
         $this->nodeVersionFactory = $nodeVersionFactory;
         $this->shell = $shell;
     }
 
     /**
-     * Plugin to modify the behavior of the save method in Magento\Config\Model\Config class.
+     * Executes the observer when the configuration section is saved.
      *
-     * @param \Magento\Config\Model\Config $subject The original config model instance.
-     * @param \Closure $proceed The original method implementation.
-     * @return mixed
+     * @param Observer $observer The observer instance containing event data.
+     * @return void
      */
-    public function aroundSave(
-        \Magento\Config\Model\Config $subject,
-        \Closure $proceed
-    ) {
-        $params = $subject->getData('groups');
-        $themePath = $this->dataHelper->checkThemePath();
-        /* Get Current Store ID */
-        $storeId = $this->storeManager->getStore()->getId();
-        if (isset($params['colors'])) {
-            $primaryConfigColor = $this->scopeConfig->getValue('viraxpress_config/colors/primary_color', ScopeInterface::SCOPE_STORE);
-            $primaryColor = $params['colors']['fields']['primary_color']['value'];
-            if ($primaryColor != $primaryConfigColor) {
-                $nodePath = $this->scopeConfig->getValue('viraxpress_config/general/server_npm_node_path');
-                if (empty($themePath)) {
-                    $storeCode = $subject->getData('scope');
-                    $storeId = (int)$this->storeRepository->get($storeCode)->getId();
-                    $themePath = $this->dataHelper->checkThemePathByStoreId($storeId);
-                }
-                if (!empty($nodePath) && $themePath) {
-                    $newEnvPath = $this->getCurrentEnvPath() . ":$nodePath";
-                    $phpVariables = json_encode(
-                        [
-                            "primary" => $primaryColor,
-                            "secondary" => $primaryColor,
-                            "root" => $this->directory->getRoot() . "/pub/vx/".$themePath."/web/tailwind/tailwind.config.js",
-                            "npmrun" => "cd " . $this->directory->getRoot() . "/pub/vx/".$themePath."/web/tailwind && npm run prod"
-                        ]
-                    );
-                    $npmCommand = "node ".$this->directory->getRoot()."/pub/vx/".$themePath."/web/tailwind/store-config.js '{$phpVariables}'";
-                    putenv('PATH=' . getenv('PATH') . ':' . $nodePath);
-                    $result = $this->shell->execute($npmCommand, [], ['PATH' => $newEnvPath]);
+    public function execute(Observer $observer)
+    {
+        $storeId = $observer->getEvent()->getStore();
+        if (!$storeId) {
+            $websiteId = $observer->getData('website');
+            $website = $this->storeManager->getWebsite($websiteId);
+            if ($website) {
+                $storeIds = $website->getStoreIds();
+                foreach ($storeIds as $key => $storeId) {
+                    $this->executeByStore($storeId);
                 }
             }
+        } else {
+            $this->executeByStore($storeId);
         }
-        return $proceed();
     }
 
     /**
-     * Get current environment PATH
+     * Executes the tailwind command.
      *
-     * @return string
+     * @param mixed $storeId.
+     * @return void
      */
+    private function executeByStore($storeId) {
+        $themePath = $this->dataHelper->checkThemePathByStoreId($storeId);
+        if (!$themePath) {
+            $themePath = $this->dataHelper->checkThemePath();
+        }
+
+        if ($storeId) {
+            $primaryColor = $this->scopeConfig->getValue('viraxpress_config/colors/primary_color', ScopeInterface::SCOPE_STORE, $storeId);
+        } else {
+            $primaryColor = $this->scopeConfig->getValue('viraxpress_config/colors/primary_color', ScopeInterface::SCOPE_STORE);
+        }
+
+        $nodePath = $this->scopeConfig->getValue('viraxpress_config/general/server_npm_node_path');
+        if (!empty($nodePath) && $themePath) {
+            $newEnvPath = $this->getCurrentEnvPath() . ":$nodePath";
+            $phpVariables = json_encode(
+                [
+                    "primary" => $primaryColor,
+                    "secondary" => $primaryColor,
+                    "root" => $this->directory->getRoot() . "/pub/vx/".$themePath."/web/tailwind/tailwind.config.js",
+                    "npmrun" => "cd " . $this->directory->getRoot() . "/pub/vx/".$themePath."/web/tailwind && npm run prod"
+                ]
+            );
+            $npmCommand = "node ".$this->directory->getRoot()."/pub/vx/".$themePath."/web/tailwind/store-config.js '{$phpVariables}'";
+            putenv('PATH=' . getenv('PATH') . ':' . $nodePath);
+            $result = $this->shell->execute($npmCommand, [], ['PATH' => $newEnvPath]);
+        }
+    }
+
     private function getCurrentEnvPath(): string
     {
-        return getenv('PATH') ?: '';
+        return getenv('PATH') ?: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin';
     }
 }
