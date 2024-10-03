@@ -81,13 +81,13 @@
                     <frontend_model>ViraXpress\Configuration\Block\System\Config\Form\Field\Disable</frontend_model>
                 </field>
             </group>
-            <group id="gallery" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+            <!-- <group id="gallery" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Catalog Gallery</label>
                 <field id="horizontal_vertical" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>PDP Thumbnail Images Horizontal Or Vertical</label>
                     <source_model>ViraXpress\Configuration\Model\Config\Source\ImageType</source_model>
                 </field>
-            </group>
+            </group> -->
             <group id="image_resize" translate="label" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Catalog Product Image Resize</label>
                 <group id="product_list_image_resize" translate="label comment" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
