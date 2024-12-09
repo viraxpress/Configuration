@@ -69,16 +69,22 @@
                 </field>
             </group>
             <group id="checkout_theme_switcher" translate="label" type="text" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Checkout Theme Switcher</label>
-                <field id="theme_full_path" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="30"
-                       translate="label,comment" type="select">
-                    <label>Theme</label>
-                    <comment>Default: 'Magento Luma'.</comment>
-                    <source_model>ViraXpress\Configuration\Model\Config\Source\Lists</source_model>
+                <label>Checkout</label>
+                <field id="enable_vira_checkout" translate="label comment" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable OnePage Checkout</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="default_checkout" translate="label comment" type="text" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="default_checkout" translate="label comment" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Checkout Contollers</label>
                     <frontend_model>ViraXpress\Configuration\Block\System\Config\Form\Field\Disable</frontend_model>
+                </field>
+                <field id="theme_full_path" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="25" translate="label,comment" type="select">
+                    <label>Theme Switcher</label>
+                    <comment>Default: 'Magento Luma'.</comment>
+                    <source_model>ViraXpress\Configuration\Model\Config\Source\Lists</source_model>
+                    <depends>
+                        <field id="*/*/enable_vira_checkout">0</field>
+                    </depends>
                 </field>
             </group>
             <!-- <group id="gallery" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -153,7 +159,7 @@
                     <frontend_model>ViraXpress\Configuration\Block\Adminhtml\Colors</frontend_model>
                 </field>
             </group>
-             <group id="animation" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+            <!-- <group id="animation" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Animation</label>
                 <group id="general" translate="label comment" type="text" sortOrder="4" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>General</label>
@@ -173,7 +179,7 @@
                         <comment>Format: Use ".class" or "#id" format.</comment>
                     </field>
                 </group>
-            </group>
+            </group> -->
             <group id="header" translate="label" type="text" sortOrder="35" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>Header</label>
                 <field id="enable_sticky_header" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">

@@ -57,6 +57,7 @@ class Lists implements OptionSourceInterface
         $themeCollection->addAreaFilter();
         $themes = [];
         foreach ($themeCollection->getItems() as $theme) {
+            if (strpos($theme->getThemePath(), "ViraXpress/frontend") !== false) continue;
             $themes[] = [
                 'value' => "{$theme->getArea()}/{$theme->getThemePath()}",
                 'label' => $theme->getThemeTitle(),
