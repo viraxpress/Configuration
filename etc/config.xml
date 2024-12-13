@@ -38,7 +38,8 @@
 				<primary_color>#ca244d</primary_color>
 			</colors>
 			<checkout_theme_switcher>
-				<theme_full_path>frontend/Magento/luma</theme_full_path>
+				<enable_vira_checkout>1</enable_vira_checkout>
+				<theme_full_path>frontend/ViraXpress/frontend</theme_full_path>
 				<default_checkout>checkout/index,multishipping/checkout,multishipping/checkout_address</default_checkout>
 			</checkout_theme_switcher>
 			<image_resize>
