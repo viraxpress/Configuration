@@ -105,6 +105,7 @@ class ConfigSaveObserver implements ObserverInterface
      * @param NodeVersionFactory $nodeVersionFactory
      * @param ThemeProviderInterface $themeProvider
      * @param RequestInterface $request
+     * @param DesignInterface $design
      * @param Data $dataHelper
      * @param Shell $shell
      */
@@ -158,10 +159,11 @@ class ConfigSaveObserver implements ObserverInterface
     /**
      * Executes the tailwind command.
      *
-     * @param mixed $storeId.
+     * @param mixed $storeId
      * @return void
      */
-    private function executeByStore($storeId) {
+    private function executeByStore($storeId)
+    {
         $themePath = $this->dataHelper->checkThemePathByStoreId($storeId);
         if (!$themePath) {
             $themePath = $this->dataHelper->checkThemePath();
@@ -190,6 +192,11 @@ class ConfigSaveObserver implements ObserverInterface
         }
     }
 
+    /**
+     * Get current environment path
+     *
+     * @return string
+     */
     private function getCurrentEnvPath(): string
     {
         return getenv('PATH') ?: '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin';
