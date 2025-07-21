@@ -44,8 +44,8 @@
 			</checkout_theme_switcher>
 			<image_resize>
 				<product_list_image_resize>
-					<width>540</width>
-					<height>540</height>
+					<width>360</width> <!-- 540  -->
+					<height>360</height> <!-- 540  -->
 				</product_list_image_resize>
 				<product_list_grid_image_resize>
 					<grid_width>360</grid_width>
