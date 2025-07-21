@@ -109,16 +109,27 @@ class Data extends AbstractHelper
         $storeId = $this->storeManager->getStore()->getId();
         $themeId = $this->design->getConfigurationDesignTheme('frontend', ['store' => $storeId]);
         $theme = $this->themeProvider->getThemeById($themeId);
-        $parentThemeId = $theme->getParentId();
 
-        if ($this->design->getDesignTheme()->getCode() != self::THEME_CODE) {
-            if (!$parentThemeId) {
-                return false;
+        $currentTheme = $theme;
+
+        // Walk through the theme hierarchy until we find the base theme (self::THEME_CODE) or run out of parents
+        $found = false;
+        while ($currentTheme) {
+            if ($currentTheme->getThemePath() === self::THEME_CODE) {
+                $found = true;
+                break;
             }
-            $parentTheme = $this->themeFactory->create()->load($parentThemeId);
-            if ($parentTheme->getThemePath() != self::THEME_CODE) {
-                return false;
+
+            $parentId = $currentTheme->getParentId();
+            if (!$parentId) {
+                break;
             }
+
+            $currentTheme = $this->themeFactory->create()->load($parentId);
+        }
+
+        if (!$found) {
+            return false;
         }
 
         $checkoutControllers = $this->scopeConfig->getValue('viraxpress_config/theme_fallback/default_checkout', ScopeInterface::SCOPE_STORE);
@@ -227,12 +238,24 @@ class Data extends AbstractHelper
         $themeId = $this->design->getConfigurationDesignTheme('frontend', ['store' => $storeId]);
         $theme = $this->themeProvider->getThemeById($themeId);
         $parentThemeId = $theme->getParentId();
-        if ($theme->getThemePath() != self::THEME_CODE &&
-            (!$parentThemeId || $this->themeFactory->create()->load($parentThemeId)->getThemePath() != self::THEME_CODE)) {
-            return false;
-        } else {
-            return $theme->getThemePath();
+        $currentTheme = $theme;
+
+        // Walk up the theme hierarchy
+        while ($currentTheme) {
+            if ($currentTheme->getThemePath() === self::THEME_CODE) {
+                return $theme->getThemePath(); // Return the child theme path (e.g., Megaparts/b2b)
+            }
+
+            $parentId = $currentTheme->getParentId();
+            if (!$parentId) {
+                break; // No more parents
+            }
+
+            $currentTheme = $this->themeFactory->create()->load($parentId);
         }
+
+        // If we reached here, no parent matched
+        return false;
     }
 
     /**
