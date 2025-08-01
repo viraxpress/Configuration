@@ -128,6 +128,11 @@
                         <label>Height (px)</label>
                         <validate>validate-number validate-digits</validate>
                     </field>
+                    <field id="zoom_image_width" translate="label comment" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                        <label>Product Zoom Image Width (px)</label>
+                        <validate>validate-number validate-digits</validate>
+                        <comment>Default value is 1200.</comment>
+                    </field>
                 </group>
                 <group id="product_carousel_image_resize" translate="label comment" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Product Widget Carousel/Grid</label>

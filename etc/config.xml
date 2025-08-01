@@ -54,6 +54,7 @@
 				<product_view_image_resize>
 					<width>750</width>
 					<height>930</height>
+					<zoom_image_width>1200</zoom_image_width>
 				</product_view_image_resize>
 				<product_carousel_image_resize>
 					<width>360</width>
